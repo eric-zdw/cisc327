@@ -50,7 +50,7 @@ def validNumberOfTickets(num):
         print("error: number of tickets out of range")
         return False
 
-def ServiceExists(num, validServices):
+def ServiceExistsVSF(num, validServices):
     for service in validServices:
         if num == service:
             return True
@@ -58,6 +58,6 @@ def ServiceExists(num, validServices):
 
 def ServiceExistsTSF(num, transactionList):
     for transaction in transactionList:
-        if num == transaction[1] and transaction[0] == "CRE":
+        if num == transaction.split()[1] and transaction.split()[0] == "CRE":
             return True
     return False
