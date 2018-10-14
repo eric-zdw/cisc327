@@ -1,6 +1,7 @@
 import valid
 import services
 import tsf
+import vsf
 
 def login():
     testinput = input()
@@ -40,11 +41,6 @@ def planner():
             loggedIn = False
         elif testinput == "createservice":
             CreateService()
-
-def ReadVSF(filename, validServices):
-    fstream = open(filename, "r")
-    for service in fstream:
-        validServices.append(service)
 
 def main():
     while(True):
