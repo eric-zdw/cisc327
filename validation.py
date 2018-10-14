@@ -41,3 +41,12 @@ def isNumeric(str):
         return True
     except ValueError:
         return False
+
+def validNumberOfTickets(num):
+    if not isNumeric(num):
+        print("error: must be numeric")
+        return False
+    elif int(num) < 1 or int(num) > 1000:
+        print("error: number of tickets out of range")
+        return False
+

@@ -1,4 +1,4 @@
-import valid
+import validation
 import services
 import tsf
 import vsf
@@ -16,7 +16,8 @@ def login():
 
 def agent():
     validServices = []
-    ReadVSF("vsf.txt", validServices)
+    transactions = []
+    vsf.ReadVSF("vsf.txt", validServices)
     for services in validServices:
         print(services)
 
@@ -29,7 +30,8 @@ def agent():
 
 def planner():
     validServices = []
-    ReadVSF("vsf.txt", validServices)
+    transactions = []
+    vsf.ReadVSF("vsf.txt", validServices)
     for service in validServices:
         print(service)
 
@@ -40,7 +42,7 @@ def planner():
         if testinput == "logout":
             loggedIn = False
         elif testinput == "createservice":
-            CreateService()
+            services.CreateService()
 
 def main():
     while(True):
