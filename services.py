@@ -1,23 +1,29 @@
 import validation
 import tsf
 
-def CreateService():
+def CreateService(transactionList, validServices):
     print("now in createservice mode")
     serviceNumber = input()
     if not validation.ValidServNumber(serviceNumber):
         print("not valid service number")
-    else:
-        serviceDate = input()
-        if not validation.ValidServDate(serviceDate):
-            print("not valid date")
-        else:
-            serviceName = input()
-            if not validation.ValidServName(serviceName):
-                print("not valid name")
-            else:
-                tsf.CreateTransaction("CRE", serviceNumber, serviceDate, serviceName)
+        return
+    serviceDate = input()
+    if not validation.ValidServDate(serviceDate):
+        print("not valid date")
+        return
+    serviceName = input()
+    if not validation.ValidServName(serviceName):
+        print("not valid name")
+        return
+    if validation.ServiceExists(serviceNumber, validServices):
+        print("service exists")
+        return
+    if validation.ServiceExistsTSF(serviceNumber, transactionList):
+        print("service exists in TSF")
+        return
+    transactionList.append(tsf.CreateTransaction("CRE", serviceNumber, serviceName, serviceDate))
 
-def DeleteService():
+def DeleteService(transactionList, validServices):
     print("now in deleteservice mode")
     serviceNumber = input()
     if not validation.ValidServNumber(serviceNumber):
@@ -27,9 +33,9 @@ def DeleteService():
         if not validation.ValidServName(serviceName):
             print("not valid name")
         else:
-            tsf.CreateTransaction("DEL", serviceNumber, serviceName)
+            transactionList.append(tsf.CreateTransaction("DEL", serviceNumber, serviceName))
 
-def SellTicket():
+def SellTicket(transactionList, validServices):
     print("now in sellticket mode")
     serviceNumber = input()
     if not validation.ValidServNumber(serviceNumber):
@@ -39,9 +45,9 @@ def SellTicket():
         if not validation.validNumberOfTickets(numTickets):
             print("not valid number of tickets")
         else:
-            tsf.CreateTransaction("SEL", serviceNumber, numTickets)
+            transactionList.append(tsf.CreateTransaction("SEL", serviceNumber, numTickets))
 
-def CancelTicket():
+def CancelTicket(transactionList, validServices):
     print("now in cancelticket mode")
     serviceNumber = input()
     if not validation.ValidServNumber(serviceNumber):
@@ -51,9 +57,9 @@ def CancelTicket():
         if not validation.validNumberOfTickets(numTickets):
             print("not valid number of tickets")
         else:
-            tsf.CreateTransaction("CAN", serviceNumber, numTickets)
+            transactionList.append(tsf.CreateTransaction("CAN", serviceNumber, numTickets))
 
-def ChangeTicket():
+def ChangeTicket(transactionList, validServices):
     print("now in changeticket mode")
     serviceNumber1 = input()
     if not validation.ValidServNumber(serviceNumber1):
@@ -67,4 +73,4 @@ def ChangeTicket():
             if not validation.validNumberOfTickets:
                 print("not valid number of tickets")
             else:
-                tsf.CreateTransaction("CHG", serviceNumber1, serviceNumber2, numTickets)
+                transactionList.append(tsf.CreateTransaction("CHG", serviceNumber1, serviceNumber2, numTickets))

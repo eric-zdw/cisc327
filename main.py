@@ -7,42 +7,56 @@ def login():
     testinput = input()
     if testinput == "agent":
         print("agent clear")
-        agent()
+        TransactionMode("agent")
     elif testinput == "planner":
         print("planner clear")
-        planner()
+        TransactionMode("planner")
     else:
         print("wrong")
 
-def agent():
-    validServices = []
-    transactions = []
-    vsf.ReadVSF("vsf.txt", validServices)
-    for services in validServices:
-        print(services)
-
-    loggedIn = True
-    while (loggedIn):
-        print("in agent")
-        testinput = input()
-        if testinput == "logout":
-            loggedIn = False
-
-def planner():
+def TransactionMode(mode):
     validServices = []
     transactions = []
     vsf.ReadVSF("vsf.txt", validServices)
     for service in validServices:
         print(service)
 
+    if mode == "agent":
+        print("in agent")
+    elif mode == "planner":
+        print("in planner")
+
     loggedIn = True
     while (loggedIn):
-        print("in planner")
         testinput = input()
         if testinput == "logout":
             loggedIn = False
+            tsf.CreateTSF(transactions)
         elif testinput == "createservice":
-            services.CreateService()
+            services.CreateService(transactions, validServices)
+            print("transactionList is now: ")
+            for transaction in transactions:
+                print(transaction)
+        elif testinput == "deleteservice":
+            services.DeleteService(transactions, validServices)
+            print("transactionList is now: ")
+            for transaction in transactions:
+                print(transaction)
+        elif testinput == "sellticket":
+            services.SellTicket(transactions, validServices)
+            print("transactionList is now: ")
+            for transaction in transactions:
+                print(transaction)
+        elif testinput == "cancelticket":
+            services.CancelTicket(transactions, validServices)
+            print("transactionList is now: ")
+            for transaction in transactions:
+                print(transaction)
+        elif testinput == "changeticket":
+            services.ChangeTicket(transactions, validServices)
+            print("transactionList is now: ")
+            for transaction in transactions:
+                print(transaction)
 
 def main():
     while(True):
