@@ -1,4 +1,14 @@
+"""
+ValidServNumber(num)
+Checks service number requirements:
+    -Must be length 5
+    -Cannot begin with 0
+Returns false if requirements aren't met, otherwise return true.
+"""
 def ValidServNumber(num):
+    if not isNumeric(len(num)):
+        print("error: must be numeric")
+        return False
     if len(num) != 5:
         print("error: must be length 5")
         return False
@@ -8,6 +18,14 @@ def ValidServNumber(num):
     else:
         return True
 
+"""
+ValidServName(name)
+Checks service name requirements:
+    -Must be length 3-39
+    -Cannot begin or end with 0
+    -Cannot use symbols besides '
+Returns false if requirements aren't met, otherwise return true.
+"""
 def ValidServName(name):
     if len(name) < 3 or len(name) > 39:
         print("error: service name invalid length")
@@ -16,6 +34,16 @@ def ValidServName(name):
     else:
         return True
 
+"""
+ValidServDate(name)
+Checks service date requirements:
+    -Must be length 8
+    -Must be numeric
+    -Year must be 1980-2999
+    -Month must be 1-12
+    -Day must be 1-31
+Returns false if requirements aren't met, otherwise return true.
+"""
 def ValidServDate(date):
     if len(date) != 8:
         print("error: must be length 8")
@@ -35,6 +63,10 @@ def ValidServDate(date):
     else:
         return True
 
+"""
+isNumeric(str)
+Returns true if str can be converted to integer, returns false otherwise.
+"""
 def isNumeric(str):
     try:
         int(str)
@@ -42,6 +74,14 @@ def isNumeric(str):
     except ValueError:
         return False
 
+"""
+ValidNumberOfTickets(num)
+Checks service number requirements:
+    -Must be length 3-39
+    -Cannot begin or end with 0
+    -Cannot use symbols besides '
+Returns false if requirements aren't met, otherwise return true.
+"""
 def validNumberOfTickets(num):
     if not isNumeric(num):
         print("error: must be numeric")
@@ -50,12 +90,23 @@ def validNumberOfTickets(num):
         print("error: number of tickets out of range")
         return False
 
+
+"""
+ServiceExistsVSF(num, validServices)
+Checks if num is already in the VSF.
+Return true if exists, otherwise return false.
+"""
 def ServiceExistsVSF(num, validServices):
     for service in validServices:
         if num == service:
             return True
     return False
 
+"""
+ServiceExistsTSF(num, transactionList)
+Checks if num has already been created in the TSF.
+Return true if exists, otherwise return false.
+"""
 def ServiceExistsTSF(num, transactionList):
     for transaction in transactionList:
         if num == transaction.split()[1] and transaction.split()[0] == "CRE":
