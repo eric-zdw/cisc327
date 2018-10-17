@@ -5,19 +5,19 @@ Eric Du (20025626)
 Jason Lee (????????)
 
 Intended input files:
-Valid Services File; "vsf.txt"
+Valid Services File
+Location is determined by first command line parameter.
 
 Intended output files:
-Transaction Summary File; "tsf.txt"
+Transaction Summary File
+Location is determined by second command line parameter.
 
 Intended usage:
-python main.py [vsf] [tsf]
+python main.py [vsf location] [tsf location]
 """
 
-import validation
-import services
-import tsf
-import vsf
+import transactions
+import fileio
 import sys
 
 """
@@ -43,8 +43,9 @@ run in agent or planner mode with respective transaction permissions.
 """
 def TransactionMode(mode):
     validServices = []
-    transactions = []
-    vsf.ReadVSF(sys.argv[1], validServices)
+    transactionList = []
+
+    fileio.ReadVSF(sys.argv[1], validServices)
     for service in validServices:
         print(service)
 
@@ -58,39 +59,34 @@ def TransactionMode(mode):
         testinput = input()
         if testinput == "logout":
             loggedIn = False
-            tsf.CreateTSF(sys.argv[2], transactions)
+            fileio.CreateTSF(sys.argv[2], transactionList)
         elif testinput == "createservice":
-            services.CreateService(transactions, validServices)
-            print("transactionList is now: ")
-            for transaction in transactions:
-                print(transaction)
+            if mode == "planner":
+                transactions.CreateService(transactionList, validServices)
+            else:
+                print("not in planner mode")
         elif testinput == "deleteservice":
-            services.DeleteService(transactions, validServices)
-            print("transactionList is now: ")
-            for transaction in transactions:
-                print(transaction)
+            if mode == "planner":
+                transactions.DeleteService(transactionList, validServices)
+            else:
+                print("not in planner mode")
         elif testinput == "sellticket":
-            services.SellTicket(transactions, validServices)
-            print("transactionList is now: ")
-            for transaction in transactions:
-                print(transaction)
+            transactions.SellTicket(transactionList, validServices)
         elif testinput == "cancelticket":
-            services.CancelTicket(transactions, validServices)
-            print("transactionList is now: ")
-            for transaction in transactions:
-                print(transaction)
+            transactions.CancelTicket(transactionList, validServices, mode)
         elif testinput == "changeticket":
-            services.ChangeTicket(transactions, validServices)
-            print("transactionList is now: ")
-            for transaction in transactions:
-                print(transaction)
+            transactions.ChangeTicket(transactionList, validServices, mode)
+        print("transactionList is now: ")
+        for transaction in transactionList:
+            print(transaction)
 
 """
 main()
 Start point of program. No transactions allowed except login, which executes
 login().
 
-Checks if program was given sufficient number of arguments; otherwise ends.
+Checks if program was given sufficient number of arguments; otherwise 
+terminates.
 """
 def main():
     if len(sys.argv) != 3:

@@ -1,4 +1,9 @@
 """
+validation.py
+Helper functions to validate correctly formatted service numbers, dates, etc.
+"""
+
+"""
 ValidServNumber(num)
 Checks service number requirements:
     -Must be length 5
@@ -35,7 +40,7 @@ def ValidServName(name):
         return True
 
 """
-ValidServDate(name)
+ValidServDate(date)
 Checks service date requirements:
     -Must be length 8
     -Must be numeric
@@ -64,17 +69,6 @@ def ValidServDate(date):
         return True
 
 """
-isNumeric(str)
-Returns true if str can be converted to integer, returns false otherwise.
-"""
-def isNumeric(str):
-    try:
-        int(str)
-        return True
-    except ValueError:
-        return False
-
-"""
 ValidNumberOfTickets(num)
 Checks service number requirements:
     -Must be length 3-39
@@ -90,7 +84,6 @@ def validNumberOfTickets(num):
         print("error: number of tickets out of range")
         return False
 
-
 """
 ServiceExistsVSF(num, validServices)
 Checks if num is already in the VSF.
@@ -104,11 +97,52 @@ def ServiceExistsVSF(num, validServices):
 
 """
 ServiceExistsTSF(num, transactionList)
-Checks if num has already been created in the TSF.
+Checks if num has been created or deleted in the TSF.
 Return true if exists, otherwise return false.
 """
 def ServiceExistsTSF(num, transactionList):
     for transaction in transactionList:
         if num == transaction.split()[1] and transaction.split()[0] == "CRE":
             return True
+        if num == transaction.split()[1] and transaction.split()[0] == "DEL":
+            return True
     return False
+
+"""
+TicketsServiced(serviceNum, transType, transactionList)
+Checks transactionList for the number of tickets serviced for a specified
+service number and transaction type. transType determines what type of 
+transaction will be tracked (ie. CAN or CHG). Returns the number of tickets
+serviced for the specified transaction type and service number.
+"""
+def TicketsServiced(serviceNum, transType, transactionList):
+    ticketsServiced = 0
+    for transaction in transactionList:
+        if transaction.split()[0] == transType and transaction.split()[1] == serviceNum:
+            ticketsServiced += transaction.split()[2]
+    return ticketsServiced
+
+"""
+AllTicketsServiced(serviceNum, transType, transactionList)
+Checks transactionList for the number of tickets serviced for a specified
+transaction type (tracks ALL service numbers). transType determines what type of 
+transaction will be tracked (ie. CAN or CHG). Returns the number of tickets
+serviced for the specified transaction type.
+"""
+def AllTicketsServiced(transType, transactionList):
+    ticketsServiced = 0
+    for transaction in transactionList:
+        if transaction.split()[0] == transType:
+            ticketsServiced += transaction.split()[2]
+    return ticketsServiced
+
+"""
+isNumeric(str)
+Returns true if str can be converted to integer, returns false otherwise.
+"""
+def isNumeric(str):
+    try:
+        int(str)
+        return True
+    except ValueError:
+        return False
