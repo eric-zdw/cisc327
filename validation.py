@@ -12,13 +12,13 @@ Returns false if requirements aren't met, otherwise return true.
 """
 def ValidServNumber(num):
     if not isNumeric(len(num)):
-        print("error: must be numeric")
+        print("error: service number must be numeric")
         return False
     if len(num) != 5:
-        print("error: must be length 5")
+        print("error: service number must be length 5")
         return False
     elif num[0] == "0":
-        print("error: cannot start with 0")
+        print("error: service number cannot start with 0")
         return False
     else:
         return True
@@ -51,19 +51,19 @@ Returns false if requirements aren't met, otherwise return true.
 """
 def ValidServDate(date):
     if len(date) != 8:
-        print("error: must be length 8")
+        print("error: service date must be length 8")
         return False
     elif not isNumeric(date):
-        print("error: must be numeric")
+        print("error: service date must be numeric")
         return False
     elif int(date[0:4]) < 1980 or int(date[0:4]) > 2999:
-        print("error: year out of range")
+        print("error: service year out of range")
         return False
     elif int(date[4:6]) < 1 or int(date[4:6]) > 13:
-        print("error: month out of range")
+        print("error: service month out of range")
         return False
     elif int(date[6:8]) < 1 or int(date[6:8]) > 32:
-        print("error: day out of range")
+        print("error: service day out of range")
         return False
     else:
         return True
@@ -78,11 +78,13 @@ Returns false if requirements aren't met, otherwise return true.
 """
 def validNumberOfTickets(num):
     if not isNumeric(num):
-        print("error: must be numeric")
+        print("error: number of tickets must be numeric")
         return False
     elif int(num) < 1 or int(num) > 1000:
         print("error: number of tickets out of range")
         return False
+    else:
+        return True
 
 """
 ServiceExistsVSF(num, validServices)

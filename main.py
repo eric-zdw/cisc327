@@ -2,7 +2,7 @@
 CISC 327: QIES Front End
 Group 24
 Eric Du (20025626)
-Jason Lee (????????)
+Jason Lee (20026161)
 
 Intended input files:
 Valid Services File
@@ -15,26 +15,23 @@ Location is determined by second command line parameter.
 Intended usage:
 python main.py [vsf location] [tsf location]
 """
-
 import transactions
 import fileio
 import sys
 
 """
-login()
+Login()
 Prompts user for login mode (ie. agent or planner). If mode is invalid,
 aborts. Calls TransactionMode(agent/planner) depending on user selection.
 """
-def login():
+def Login():
     testinput = input()
     if testinput == "agent":
-        print("agent clear")
         TransactionMode("agent")
     elif testinput == "planner":
-        print("planner clear")
         TransactionMode("planner")
     else:
-        print("wrong")
+        print("error: invalid login mode")
 
 """
 TransactionMode(mode)
@@ -44,57 +41,56 @@ run in agent or planner mode with respective transaction permissions.
 def TransactionMode(mode):
     validServices = []
     transactionList = []
-
     fileio.ReadVSF(sys.argv[1], validServices)
-    for service in validServices:
-        print(service)
-
-    if mode == "agent":
-        print("in agent")
-    elif mode == "planner":
-        print("in planner")
 
     loggedIn = True
     while (loggedIn):
-        testinput = input()
-        if testinput == "logout":
+        userInput = input()
+
+        if userInput == "logout":
             loggedIn = False
             fileio.CreateTSF(sys.argv[2], transactionList)
-        elif testinput == "createservice":
+        elif userInput == "createservice":
             if mode == "planner":
                 transactions.CreateService(transactionList, validServices)
             else:
-                print("not in planner mode")
-        elif testinput == "deleteservice":
+                print("error: not in planner mode")
+        elif userInput == "deleteservice":
             if mode == "planner":
                 transactions.DeleteService(transactionList, validServices)
             else:
-                print("not in planner mode")
-        elif testinput == "sellticket":
+                print("error: not in planner mode")
+        elif userInput == "sellticket":
             transactions.SellTicket(transactionList, validServices)
-        elif testinput == "cancelticket":
+        elif userInput == "cancelticket":
             transactions.CancelTicket(transactionList, validServices, mode)
-        elif testinput == "changeticket":
+        elif userInput == "changeticket":
             transactions.ChangeTicket(transactionList, validServices, mode)
-        print("transactionList is now: ")
+        else:
+            print("error: invalid transaction type")
+
+        print("transaction list is now:")
         for transaction in transactionList:
             print(transaction)
 
+
 """
-main()
+Main()
 Start point of program. No transactions allowed except login, which executes
 login().
 
 Checks if program was given sufficient number of arguments; otherwise 
 terminates.
 """
-def main():
+def Main():
     if len(sys.argv) != 3:
-        print("incorrect number of arguments")
+        print("error: incorrect number of arguments")
     else:
         while(True):
             loginInput = input()
             if loginInput == "login":
-                login()
+                Login()
+            else:
+                print("error: please login")
 
-main()
+Main()
